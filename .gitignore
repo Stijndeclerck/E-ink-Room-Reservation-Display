@@ -1,0 +1,11 @@
+# Folders
+/mbed-os
+/BUILD
+/.vscode
+
+# Files
+.mbed
+mbed_settings.py
+mbed_settings.pyc
+mbed-os.lib
+
