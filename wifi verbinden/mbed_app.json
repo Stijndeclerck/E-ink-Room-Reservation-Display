@@ -1,0 +1,18 @@
+{
+    "config": {
+        "wifi-ssid": {
+            "help": "WiFi SSID",
+            "value": "\"teamzoepertoff\""
+        },
+        "wifi-password": {
+            "help": "WiFi Password",
+            "value": "\"stijnkanniks\""
+        }
+    },
+    "target_overrides": {
+        "*": {
+            "platform.stdio-convert-newlines": true,
+            "esp8266.provide-default" : true
+        }
+    }
+}
