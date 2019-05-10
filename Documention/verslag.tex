@@ -1,3 +1,4 @@
+
 \documentclass[a4paper,kul]{kulakarticle} %options: kul or kulak (default)
 
 \usepackage[utf8]{inputenc}
@@ -97,22 +98,27 @@ Om het verslag te maken heeft iedereen het deel ingevuld waar hij zelf meest aan
 \newpage
 
 \section{Implementatie}
+\subsection{Database en WAP}
+Voor het opslaan van de gegevens is er een database opgezet op een Raspberry Pi model B+ door gebruik te maken van phpMyAdmin. Hier draait een SQL server waarin alle gegevens voor de komende events van verschillende lokalen kunnen opgeslagen worden. Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events en rooms. De structuur van de database en de relaties tussen de verschillende tables staat afgebeeld in figuur \ref{fig:dbstruct}.
 
-tekst.
-
+\begin{figure}
+	\includegraphics[width=0.9\textwidth]{dbstruct}
+	\caption{Database structure}
+	\label{fig:dbstruct}
+\end{figure}
 \newpage
 
 \section{Resultaten}
 
-Wanneer we uit de databank de info van het lokaal 02.85 filteren, is dit het resultaat:
+Wanneer we uit de databank de info van het lokaal 02.85 filteren, krijgen we volgende figuur \ref{fig:vboutput}.
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.75\textwidth]{vbDatabank}
 	\caption{lokaalbezetting lokaal 02.85}
-	\label{lokaalbezetting 02.85}
+	\label{fig:vboutput}
 \end{figure}
-
+	
 \newpage
 
 \section{In het vervolg}
