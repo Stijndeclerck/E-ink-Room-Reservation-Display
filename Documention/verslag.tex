@@ -1,0 +1,158 @@
+\documentclass[a4paper,kul]{kulakarticle} %options: kul or kulak (default)
+
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\date{31/05/2019}
+\address{
+  Faculteit Industriële Ingenieurswetenschappen \\
+  Projectlab bachelor elektronica-ICT \\
+  J. Lannoo, L. Espeel}
+\title{Verslag E-ink room reservation display}
+\author{Baptiste Pattyn\and Michel Dequick \and Stijn Declerck \and Ine Vanderhaeghe}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+	\centering
+	\vspace*{\fill}
+	\huge
+	\textbf{E-ink room reservation display}
+	\vspace*{\fill}
+\end{center}
+
+\newpage
+
+\section{Inhoud}
+
+\tableofcontents
+
+\newpage
+
+\section{Probleemstelling}
+
+We willen een display maken voor klaslokalen die dynamisch kan veranderen per uur. 
+Op het scherm moeten verschillende zaken komen: het nummer van het klaslokaal, de datum, op welke uren het lokaal bezet is op die dag, welk vak op dit moment gegeven wordt en de docent die dit vak geeft. 
+\newline
+\newline
+We gebruiken hiervoor een E-ink display omdat dit het meest energiezuinig is. Dit komt omdat de display enkel voeding nodig heeft om het scherm te veranderen. We moeten het scherm maar om het uur aanpassen, dus alle tijd daartussen heeft een E-ink display geen voeding nodig.
+Een ander voordeel van een E-ink display is dat het geen licht uitzendt, maar het reflecteert licht zoals een blad papier. Hierdoor is het gemakkelijker leesbaar, ook als er in de omgeving veel licht is. 
+\newline
+Een E-ink display bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit plastiek, de negatieve kant is zwart plastiek. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden.
+\newline
+\newline
+Om dit te realiseren zijn er moeten we met verschillende dingen rekening houden. 
+
+We moeten een E-ink display implementeren. Hierbij moeten we bekijken als hier burn-in of ghosting kan optreden. Ook moeten we rekening houden met de grootte van de memory in de display. 
+
+Er moet een databank opgezet worden waar alle data van de lokalen in opgeslagen is. Deze databank moet bereikbaar zijn via wifi.
+
+Er moet een connectie gemaakt worden via een wifi module van de databank naar de display.
+
+\newpage
+
+\section{Aanpak}
+
+Eerst hebben we alle deelopdrachten op een rijtje gezet en een planning gemaakt. Daarbij hebben we ook een taakverdeling gemaakt. 
+\newline
+\newline
+Dit zijn de grootste taken:
+\newline
+\newline
+Een library maken voor de display – Michel
+\newline
+Eerst moesten we bekijken hoe we een afbeelding op de display konden krijgen. Op het internet vonden we een voorbeeld van een E-ink display die gemaakt was met een Arduino. Wij maken gebruik van een mbed, dus we hebben de code moeten aanpassen. 
+Als eerste hebben we geprobeerd om een afbeelding op de display te zetten en om een afbeelding die er op staat te kunnen wissen.
+Daarna hebben we een ontwerp gemaakt van wat we allemaal op het scherm wilden zetten en waar. We hebben dan ook geprobeerd om dit op de display te krijgen.
+\newline
+\newline
+Een database opstellen met een wifi access point – Baptiste
+\newline
+We hebben een database opgesteld op een Raspberry Pi. Daar hebben we ook een wifi access point op geïmplementeerd zodat de display met de databank kan communiceren.
+Eens de databank opgevuld was konden we testen als we de data konden in een tabel zetten per lokaal.
+\newline
+\newline
+Wifi connectiviteit maken – Stijn (en Ine)
+\newline
+Het is belangrijk om via wifi te kunnen communiceren tussen de E-ink display en de databank. Hiervoor moesten we onderzoeken hoe een HTTP GET request werkt en het hoe we het zelf konden implementeren in onze toepassing.
+\newline
+\newline
+Er waren ook enkele kleinere taken.
+\newline
+\newline
+De databank invullen – Ine
+\newline
+De databank moest opgevuld worden met fictieve data over de lokaalbezetting zodat we een proof of concept konden maken om voor te stellen op de presentatie van ons project.
+\newline
+\newline
+Het verslag en de powerpointpresentatie opstarten – Ine 
+\newline
+Om het verslag te maken heeft iedereen het deel ingevuld waar hij zelf meest aan gewerkt heeft aangevuld. 
+
+\newpage
+
+\section{Implementatie}
+
+tekst.
+
+\newpage
+
+\section{Resultaten}
+
+Wanneer we uit de databank de info van het lokaal 02.85 filteren, is dit het resultaat:
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vbDatabank}
+	\caption{lokaalbezetting lokaal 02.85}
+	\label{lokaalbezetting 02.85}
+\end{figure}
+
+\newpage
+
+\section{In het vervolg}
+
+tekst.
+
+\newpage
+
+\section{Conclusie}
+
+tekst.
+
+\newpage
+
+\section{Referenties}
+
+Info over E-ink display:
+\newline
+\url{https://en.wikipedia.org/wiki/Electronic_paper}
+\newline
+\newline
+Datasheet en info ESP-WROOM-02:
+\newline
+\url{https://download.mikroe.com/documents/datasheets/0c-esp-wroom-02-datasheet-en.pdf}
+\newline
+\url{https://www.mikroe.com/wifi-esp-click?fbclid=IwAR1Qrxyl0ikyZsw4N61dbd0x7O3T-iRNJ1oVRjJmEuPa06xPFVXqTo3Wy4Q}
+\newline
+\newline
+Datasheet en info ESP8266EX:
+\newline
+\url{https://www.espressif.com/sites/default/files/documentation/0a-esp8266ex_datasheet_en.pdf}
+\newline
+\url{https://randomnerdtutorials.com/esp8266-troubleshooting-guide/?fbclid=IwAR3-bTdU5mpWbVLWGdsfMKQxDZHjPWDLApTJ3lIgBksrPFn-krIA8eLZSFE}
+\newline
+\newline
+Voorbeelden:
+\newline
+\url{https://os.mbed.com/teams/ESP8266/code/esp8266-driver/}
+\newline
+\url{https://os.mbed.com/docs/mbed-os/v5.12/apis/wi-fi.html#wi-fi-example}
+
+
+\end{document}
