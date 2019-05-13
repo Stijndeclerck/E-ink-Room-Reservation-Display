@@ -38,13 +38,15 @@
 \section{Probleemstelling}
 
 We willen een display maken voor klaslokalen die dynamisch kan veranderen per uur. 
-Op het scherm moeten verschillende zaken komen: het nummer van het klaslokaal, de datum, op welke uren het lokaal bezet is op die dag, welk vak op dit moment gegeven wordt en de docent die dit vak geeft. 
+Op het scherm moeten verschillende zaken komen: het nummer van het klaslokaal, de datum, op welke uren het lokaal bezet is op die dag, welk vak op dit moment gegeven wordt en de docent die dit vak geeft.
 \newline
 \newline
 We gebruiken hiervoor een E-ink display omdat dit het meest energiezuinig is. Dit komt omdat de display enkel voeding nodig heeft om het scherm te veranderen. We moeten het scherm maar om het uur aanpassen, dus alle tijd daartussen heeft een E-ink display geen voeding nodig.
 Een ander voordeel van een E-ink display is dat het geen licht uitzendt, maar het reflecteert licht zoals een blad papier. Hierdoor is het gemakkelijker leesbaar, ook als er in de omgeving veel licht is. 
 \newline
-Een E-ink display bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit plastiek, de negatieve kant is zwart plastiek. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden.
+De eenvoudigste E-ink display is de "two pigment ink system". Dit bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit plastiek, de negatieve kant is zwart plastiek. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden.
+\newline
+Er bestaat ook een "Three pigment ink system". Het werkt op dezelfde manier als de two pigment ink system, maar 
 \newline
 \newline
 Om dit te realiseren zijn er moeten we met verschillende dingen rekening houden. 
@@ -78,7 +80,7 @@ We hebben een database opgesteld op een Raspberry Pi. Daar hebben we ook een wif
 Eens de databank opgevuld was konden we testen als we de data konden in een tabel zetten per lokaal.
 \newline
 \newline
-Wifi connectiviteit maken – Stijn (en Ine)
+Wifi connectiviteit maken – Stijn
 \newline
 Het is belangrijk om via wifi te kunnen communiceren tussen de E-ink display en de databank. Hiervoor moesten we onderzoeken hoe een HTTP GET request werkt en het hoe we het zelf konden implementeren in onze toepassing.
 \newline
@@ -123,7 +125,7 @@ Wanneer we uit de databank de info van het lokaal 02.85 filteren, krijgen we vol
 
 \section{In het vervolg}
 
-tekst.
+Als we dit project verder zouden uitwerken, zouden we een andere mbed en wifi module gebruiken. Nu hebben we veel tijd verloren met het zoeken naar hoe we iets moeten implementeren. We zouden kunnen werken met modules die we kennen, waardoor alles sneller zou kunnen gaan. 
 
 \newpage
 
