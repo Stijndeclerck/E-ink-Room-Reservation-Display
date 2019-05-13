@@ -98,14 +98,36 @@ Om het verslag te maken heeft iedereen het deel ingevuld waar hij zelf meest aan
 \newpage
 
 \section{Implementatie}
-\subsection{Database en WAP}
-Voor het opslaan van de gegevens is er een database opgezet op een Raspberry Pi model B+ door gebruik te maken van phpMyAdmin. Hier draait een SQL server waarin alle gegevens voor de komende events van verschillende lokalen kunnen opgeslagen worden. Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events en rooms. De structuur van de database en de relaties tussen de verschillende tables staat afgebeeld in figuur \ref{fig:dbstruct}.
-
-\begin{figure}
+\subsection{Database en Wifi Access Point}
+Voor het opslaan van de gegevens is er een database opgezet op een Raspberry Pi model B+ door gebruik te maken van phpMyAdmin. Hier draait een SQL server op waarin alle gegevens voor de komende events van verschillende lokalen kunnen opgeslagen worden. Verder zijn alle gegevens van de courses er ook opgeslagen en de algemene info van de rooms. Om ervoor te zorgen dat onze MBED toegang kan krijgen tot deze database hebben we een Wifi Access Point (WAP) op de Raspberry Pi gezet, waarmee de MBED zich kan verbinden via een ESP8266 Wifi chip. Het opvragen van de gegevens door de mbed gebeurt via een GET request op de HTTP poort van de Raspberry Pi (poort 80).
+ 
+\subsubsection{Database}
+Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events en rooms. De structuur van de database en de relaties tussen de verschillende tables staat afgebeeld in figuur \ref{fig:dbstruct}. Op de Raspberry Pi staan verschillende PHP files die ervoor zorgen dat de webserver kan verbinden met de database. Een belangrijke file hierbij is dbConnect.php \ref{fig:dbconnect}, in deze file staan de gegevens die nodig zijn om te kunnen verbinden met de database. In deze  file declareren we verschillende variabelen: \verb|$host|, \verb|$user|, \verb|$password|en \verb|$databse|. Deze worden dan gebruikt in een \verb|mysqli_connect()| commando om een verbinding op te zetten met de databse. Hierna wordt er nog een controle gedaan om te kijken of de verbinding tot stand is gekomen, indien dit niet het geval is dan verkrijgen we een error. Deze code is enkel bedoeld voor tijdens het opzetten van de webserver en de database en dient verwijderd te worden indien de code definitief in gebruik wordt genomen. Als \verb|$host| kiezen we het local host adres 127.0.0.1 omdat de database zich op de Raspberry Pi zelf bevindt. De \verb|$user| en het \verb|$password| zijn specifiek voor elke database en hangen af van welke user je ingesteld hebt op je SQL server. 
+\begin{figure}[h]
+	\begin{verbatim}
+	<?php
+	$host = "127.0.0.1";
+	$user = "root";
+	$password = "password" ;
+	$database = "roomdb";
+	$conn = mysqli_connect($host, $user, $password, $database);
+	// delete when ready to launch
+	if(!$conn){
+	die("Connection failed: " . $conn ->connect_error);
+	}
+	?>
+	\end{verbatim}
+	\caption{dbConnect.php}
+	\label{fig:dbconnect}
+\end{figure}
+\begin{figure}[h]
 	\includegraphics[width=0.9\textwidth]{dbstruct}
 	\caption{Database structure}
 	\label{fig:dbstruct}
 \end{figure}
+\subsubsection{Wifi Access Point op Raspberry Pi}
+Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}.
+\subsubsection{Webserver en GET request}
 \newpage
 
 \section{Resultaten}
@@ -133,32 +155,35 @@ tekst.
 
 \newpage
 
-\section{Referenties}
+%\section{Referenties}
 
-Info over E-ink display:
-\newline
-\url{https://en.wikipedia.org/wiki/Electronic_paper}
-\newline
-\newline
-Datasheet en info ESP-WROOM-02:
-\newline
-\url{https://download.mikroe.com/documents/datasheets/0c-esp-wroom-02-datasheet-en.pdf}
-\newline
-\url{https://www.mikroe.com/wifi-esp-click?fbclid=IwAR1Qrxyl0ikyZsw4N61dbd0x7O3T-iRNJ1oVRjJmEuPa06xPFVXqTo3Wy4Q}
-\newline
-\newline
-Datasheet en info ESP8266EX:
-\newline
-\url{https://www.espressif.com/sites/default/files/documentation/0a-esp8266ex_datasheet_en.pdf}
-\newline
-\url{https://randomnerdtutorials.com/esp8266-troubleshooting-guide/?fbclid=IwAR3-bTdU5mpWbVLWGdsfMKQxDZHjPWDLApTJ3lIgBksrPFn-krIA8eLZSFE}
-\newline
-\newline
-Voorbeelden:
-\newline
-\url{https://os.mbed.com/teams/ESP8266/code/esp8266-driver/}
-\newline
-\url{https://os.mbed.com/docs/mbed-os/v5.12/apis/wi-fi.html#wi-fi-example}
+%Info over E-ink display:
+%\newline
+%\url{https://en.wikipedia.org/wiki/Electronic_paper}
+%\newline
+%\newline
+%Datasheet en info ESP-WROOM-02:
+%\newline
+%\url{https://download.mikroe.com/documents/datasheets/0c-esp-wroom-02-datasheet-en.pdf}
+%\newline
+%\url{https://www.mikroe.com/wifi-esp-click?fbclid=IwAR1Qrxyl0ikyZsw4N61dbd0x7O3T-iRNJ1oVRjJmEuPa06xPFVXqTo3Wy4Q}
+%\newline
+%\newline
+%Datasheet en info ESP8266EX:
+%\newline
+%\url{https://www.espressif.com/sites/default/files/documentation/0a-esp8266ex_datasheet_en.pdf}
+%\newline
+%\url{https://randomnerdtutorials.com/esp8266-troubleshooting-guide/?fbclid=IwAR3-bTdU5mpWbVLWGdsfMKQxDZHjPWDLApTJ3lIgBksrPFn-krIA8eLZSFE}
+%\newline
+%\newline
+%Voorbeelden:
+%\newline
+%\url{https://os.mbed.com/teams/ESP8266/code/esp8266-driver/}
+%\newline
+%\url{https://os.mbed.com/docs/mbed-os/v5.12/apis/wi-fi.html#wi-fi-example}
 
+
+\bibliographystyle{plain}
+\bibliography{library}
 
 \end{document}
