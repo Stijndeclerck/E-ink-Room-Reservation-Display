@@ -5,6 +5,7 @@
 \usepackage[dutch]{babel}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{url}
 
 \date{31/05/2019}
 \address{
@@ -120,13 +121,50 @@ Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events
 	\caption{dbConnect.php}
 	\label{fig:dbconnect}
 \end{figure}
+\newpage
 \begin{figure}[h]
 	\includegraphics[width=0.9\textwidth]{dbstruct}
 	\caption{Database structure}
 	\label{fig:dbstruct}
 \end{figure}
 \subsubsection{Wifi Access Point op Raspberry Pi}
-Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}.
+Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}. De belangrijkste services die we hiervoor installeren op de Raspberry Pi zijn \verb|hostapd| en \verb|dnsmasq|.
+\paragraph{dnsmasq} \mbox{}\\ 
+Deze service is in principe gewoon een DHCP (Dynamic Host Configuration Protocol) server. Deze zal ervoor zorgen dat we dynamisch IP adressen kunnen toekennen op ons netwerk zonder dat we alle apparaten manueel moeten verbinden. In de config file van dnsmasq (die zich onder het volgende path bevindt \verb|/etc/dnsmasq.conf|) kennen we een range aan van IP adressen die onze Wifi kan gebruiken om toe te kennen aan apparaten. Verder bepalen we ook hoelang deze IP adressen kunnen gebruikt worden door de apparaten die zich verbinden met het Wifi netwerk. De config file ziet er dan als volgt uit \ref{fig:dnsmasq} .
+
+\begin{figure}[!h]
+	\begin{verbatim}
+		interface=wlan0
+		dhcp-range=192.168.0.11,192.168.0.30,255.255.255.0,24h
+	\end{verbatim}
+	\caption{dnsmasq.conf}
+	\label{fig:dnsmasq}
+\end{figure}
+\paragraph{hostapd} \mbox{}\\
+Deze service zorgt ervoor dat er een WAP wordt opgezet. In de config file van hostapd (die zich onder het volgende path bevindt \verb|/etc/hostapd/hostapd.conf|) stel je het SSID en het wachtwoord in van je WAP. Verder stel je hier ook een bridge in tussen je ethernet verbinding en je wlan0 van je Raspberry Pi. Dit zorgt ervoor dat je zowel via ethernet als via de WAP toegang kan krijgen tot je webserver. In deze file zorgen we ervoor dat we steeds op channel 7 zullen zitten van van de Wifi. We stellen ook de Wifi Protected Acces (WPA) versie in en bepalen welke vorm van management we zullen gebruiken voor het WPA wachtwoord. Voor deze opdracht gebruiken we WPA-PSK wat staat voor Pre-Shared Key. Een wachtwoord bestaat uit minimaal 8 en maximaal 63 tekens. De config file ziet er dan als volgt uit \ref{fig:hostapd} .
+
+\begin{figure}[!h]
+	\begin{verbatim}
+	interface=wlan0
+	driver=nl80211
+	bridge=br0
+	hw_mode=g
+	channel=7
+	wmm_enabled=0
+	macaddr_acl=0
+	auth_algs=1
+	ignore_broadcast_ssid=0
+	wpa=2
+	wpa_key_mgmt=WPA-PSK
+	wpa_pairwise=TKIP
+	wpa_pairwise=CCMP
+	ssid=teamzoepertoff
+	wpa_passphrase=stijnkanniks
+	\end{verbatim}
+	\caption{hostapd.conf}
+	\label{fig:hostapd}
+\end{figure}
+\newpage
 \subsubsection{Webserver en GET request}
 \newpage
 
