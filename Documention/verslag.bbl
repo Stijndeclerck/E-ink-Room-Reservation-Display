@@ -1,5 +1,26 @@
 \begin{thebibliography}{1}
 
+\bibitem{ACeP}
+Good e~Reader.
+\newblock The first product with e ink advanced color e-paper is now available,
+  2019.
+\newblock [Online; accessed 13-May-2019].
+
+\bibitem{ESP-WROOM-02}
+Espressif Inc.
+\newblock {\em Datasheet ESP-WROOM-02}, 2.0 edition, 2016.
+\newblock [Online; accessed 13-May-2019].
+
+\bibitem{ESP8266EX}
+Espressif Inc.
+\newblock {\em Datasheet ESP8266EX}, 6.0 edition, 2018.
+\newblock [Online; accessed 13-May-2019].
+
+\bibitem{E-ink}
+E~Ink~Holdings Inc.
+\newblock Electronic ink, 2017.
+\newblock [Online; accessed 13-May-2019].
+
 \bibitem{RaspberryPiWAP}
 {SuerferTim}.
 \newblock How to use your raspberry pi as a wireless access point, 2017.
