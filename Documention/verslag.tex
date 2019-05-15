@@ -130,6 +130,14 @@ Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events
 \subsubsection{Wifi Access Point op Raspberry Pi}
 Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}.
 \subsubsection{Webserver en GET request}
+De webserver die we op onze Raspberry Pi draaien is een apache 2.4 server die de mogelijkheid heeft om samen te werken met onze SQL database. Voor onze applicatie hebben we slechts vier van de zes aanwezige files nodig: 
+\begin{itemize}
+	\item \verb|dbConnect.php|
+	\item \verb|event.php|
+	\item \verb|room.php|
+	\item \verb|roominfo.php|
+\end{itemize}
+De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan.
 \newpage
 
 \section{Resultaten}
