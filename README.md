@@ -6,5 +6,7 @@
 2. Create eniroment `mbed new E-ink-Room-Reservation-Display` (execute outside of root directory)
 3. Set toolchain `mbed toolchain GCC_ARM`
 4. Set target `mbed target K64F`
+5. Set target `mbed update`
+6. Use `-std=gnu++11` insted of `-std=gnu++98` in `mbed-os/tools/profiles/<debug/develop/release>.json`
 
 
