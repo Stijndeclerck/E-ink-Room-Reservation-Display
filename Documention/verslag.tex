@@ -5,7 +5,9 @@
 \usepackage[dutch]{babel}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{url}
+
+\usepackage{subcaption}
+
 
 \date{31/05/2019}
 \address{
@@ -39,22 +41,104 @@
 \section{Probleemstelling}
 
 We willen een display maken voor klaslokalen die dynamisch kan veranderen per uur. 
-Op het scherm moeten verschillende zaken komen: het nummer van het klaslokaal, de datum, op welke uren het lokaal bezet is op die dag, welk vak op dit moment gegeven wordt en de docent die dit vak geeft. 
+
+
+Op het scherm moeten verschillende zaken komen: het nummer van het klaslokaal, de datum, op welke uren het lokaal bezet is op die dag, welk vak op dit moment gegeven wordt en de docent die dit vak geeft.
+
 \newline
-\newline
-We gebruiken hiervoor een E-ink display omdat dit het meest energiezuinig is. Dit komt omdat de display enkel voeding nodig heeft om het scherm te veranderen. We moeten het scherm maar om het uur aanpassen, dus alle tijd daartussen heeft een E-ink display geen voeding nodig.
-Een ander voordeel van een E-ink display is dat het geen licht uitzendt, maar het reflecteert licht zoals een blad papier. Hierdoor is het gemakkelijker leesbaar, ook als er in de omgeving veel licht is. 
-\newline
-Een E-ink display bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit plastiek, de negatieve kant is zwart plastiek. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden.
-\newline
-\newline
-Om dit te realiseren zijn er moeten we met verschillende dingen rekening houden. 
+
+Er zijn verschillende dingen waar we rekening mee moeten houden om dit te realiseren:
 
 We moeten een E-ink display implementeren. Hierbij moeten we bekijken als hier burn-in of ghosting kan optreden. Ook moeten we rekening houden met de grootte van de memory in de display. 
 
 Er moet een databank opgezet worden waar alle data van de lokalen in opgeslagen is. Deze databank moet bereikbaar zijn via wifi.
 
 Er moet een connectie gemaakt worden via een wifi module van de databank naar de display.
+\newline
+
+We gebruiken hiervoor een E-ink display omdat dit het meest energiezuinig is. Dit komt omdat de display enkel voeding nodig heeft om het scherm te veranderen. We moeten het scherm maar om het uur aanpassen, dus alle tijd daartussen heeft een E-ink display geen voeding nodig.
+Een ander voordeel van een E-ink display is dat het geen licht uitzendt, maar het reflecteert licht zoals een blad papier. Hierdoor is het gemakkelijker leesbaar, ook als er in de omgeving veel licht is. 
+\newline
+
+
+De eenvoudigste E-ink display is de "two pigment ink system". Dit bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit pigment, de negatieve kant is zwart pigment. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden. (zie afbeelding \ref{fig:2psystem} ).
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{Two_pigment_ink_system1}
+		\label{fig:sub2psystem}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{Two_pigment_ink_system2}
+		\label{fig:sub2psystem2}
+	\end{subfigure}
+	\caption{two pigment ink system}
+	\label{fig:2psystem}
+\end{figure}
+
+Er bestaat ook een "Three pigment ink system". Dit werkt op ongeveer dezelfde manier als two pigment ink system (zie afbeelding \ref{fig:3psystem} ). Hier is het witte pigment negatief geladen en het rode pigment is positief geladen. Om het zwarte pigment aan de oppervlakte te brengen, moet er een gesplitste lading aangebracht worden.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{three_pigment_ink_system1}
+		\label{fig:sub3psystem}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{three_pigment_ink_system2}
+		\label{fig:sub3psystem2}
+	\end{subfigure}
+	\caption{three pigment ink system}
+	\label{fig:3psystem}
+\end{figure}
+
+De E-ink display die wij gaan gebruiken, gebruikt het three pigment ink system. Op deze manier kunnen we op een overzichtelijke manier op een tijdslijn aanduiden op welke uren het lokaal bezet is.
+\newline
+
+Daarnaast bestaat er ook een "Advanced color ePaper". Hierbij kunnen nog meer kleuren op het scherm afgebeeld worden. (zie afbeelding \ref{fig:ACeP} ). Dit gebruiken wij niet in dit project. Dit systeem gebruikt 4 kleuren: cyaan, magenta, geel en wit.  \newline
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{ACeP1}
+		\label{fig:subACeP}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{ACeP2}
+		\label{fig:subACeP2}
+	\end{subfigure}
+	\caption{Advanced color ePaper}
+	\label{fig:ACeP}
+\end{figure}
+
+bron figuren: \cite{E-ink}.
+
+bron werking ACeP: \cite{ACeP}.
+\newline
+
+Een E-ink display bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit plastiek, de negatieve kant is zwart plastiek. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden.
+
+\newline
+Dit is het materiaal dat we gebruikt hebben:
+\newline
+Mbed FRDM-K64F
+
+met application shield en click shield
+\newline
+ESP-WROOM-02 click met ESP8266EX wifi bord
+
+Datasheet ESP-WROOM-02: \cite{ESP-WROOM-02}
+
+Datasheet ESP8266EX: \cite{ESP8266EX}
+\newline
+Eink click, small and big display
 
 \newpage
 
@@ -200,34 +284,6 @@ tekst.
 tekst.
 
 \newpage
-
-%\section{Referenties}
-
-%Info over E-ink display:
-%\newline
-%\url{https://en.wikipedia.org/wiki/Electronic_paper}
-%\newline
-%\newline
-%Datasheet en info ESP-WROOM-02:
-%\newline
-%\url{https://download.mikroe.com/documents/datasheets/0c-esp-wroom-02-datasheet-en.pdf}
-%\newline
-%\url{https://www.mikroe.com/wifi-esp-click?fbclid=IwAR1Qrxyl0ikyZsw4N61dbd0x7O3T-iRNJ1oVRjJmEuPa06xPFVXqTo3Wy4Q}
-%\newline
-%\newline
-%Datasheet en info ESP8266EX:
-%\newline
-%\url{https://www.espressif.com/sites/default/files/documentation/0a-esp8266ex_datasheet_en.pdf}
-%\newline
-%\url{https://randomnerdtutorials.com/esp8266-troubleshooting-guide/?fbclid=IwAR3-bTdU5mpWbVLWGdsfMKQxDZHjPWDLApTJ3lIgBksrPFn-krIA8eLZSFE}
-%\newline
-%\newline
-%Voorbeelden:
-%\newline
-%\url{https://os.mbed.com/teams/ESP8266/code/esp8266-driver/}
-%\newline
-%\url{https://os.mbed.com/docs/mbed-os/v5.12/apis/wi-fi.html#wi-fi-example}
-
 
 \bibliographystyle{plain}
 \bibliography{library}
