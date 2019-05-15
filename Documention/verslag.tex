@@ -59,7 +59,7 @@ Een ander voordeel van een E-ink display is dat het geen licht uitzendt, maar he
 
 De eenvoudigste E-ink display is de "two pigment ink system". Dit bestaat uit kleine gebieden die dipolen zijn (deze worden gebruikt als de pixels van de afbeelding). De positieve kant van de gebieden bestaat uit wit pigment, de negatieve kant is zwart pigment. Deze gebieden bevinden zich in een bubbel van olie zodat ze gemakkelijk kunnen omdraaien, en zitten tussen transparante elektrode lagen. Wanneer nu op die elektrode lagen een spanning wordt gezet, kan bepaald worden welke delen van het scherm zwart zijn, en welke wit. Op die manier kan een zwart-wit afbeelding op de display geprogrammeerd worden. (zie afbeelding \ref{fig:2psystem} ).
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -75,7 +75,9 @@ De eenvoudigste E-ink display is de "two pigment ink system". Dit bestaat uit kl
 	\label{fig:2psystem}
 \end{figure}
 
-\begin{figure}[h!]
+Er bestaat ook een "Three pigment ink system". Dit werkt op ongeveer dezelfde manier als two pigment ink system (zie afbeelding \ref{fig:3psystem} ). Hier is het witte pigment negatief geladen en het rode pigment is positief geladen. Om het zwarte pigment aan de oppervlakte te brengen, moet er een gesplitste lading aangebracht worden.
+
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -96,7 +98,7 @@ De E-ink display die wij gaan gebruiken, gebruikt het three pigment ink system. 
 
 Daarnaast bestaat er ook een "Advanced color ePaper". Hierbij kunnen nog meer kleuren op het scherm afgebeeld worden. (zie afbeelding \ref{fig:ACeP} ). Dit gebruiken wij niet in dit project. Dit systeem gebruikt 4 kleuren: cyaan, magenta, geel en wit.  \newline
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -180,7 +182,7 @@ Om het verslag te maken heeft iedereen het deel ingevuld waar hij zelf meest aan
 Voor het opslaan van de gegevens is er een database opgezet op een Raspberry Pi model B+ door gebruik te maken van phpMyAdmin. Hier draait een SQL server op waarin alle gegevens voor de komende events van verschillende lokalen kunnen opgeslagen worden. Verder zijn alle gegevens van de courses er ook opgeslagen en de algemene info van de rooms. Om ervoor te zorgen dat onze MBED toegang kan krijgen tot deze database hebben we een Wifi Access Point (WAP) op de Raspberry Pi gezet, waarmee de MBED zich kan verbinden via een ESP8266 Wifi chip. Het opvragen van de gegevens door de mbed gebeurt via een GET request op de HTTP poort van de Raspberry Pi (poort 80).
  
 \subsubsection{Database}
-Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events en rooms. De structuur van de database en de relaties tussen de verschillende tables staat afgebeeld in figuur \ref{fig:dbstruct}. Op de Raspberry Pi staan verschillende PHP files die ervoor zorgen dat de webserver kan verbinden met de database. Een belangrijke file hierbij is dbConnect.php \ref{fig:dbconnect}, in deze file staan de gegevens die nodig zijn om te kunnen verbinden met de database. In deze  file declareren we verschillende variabelen: \verb|$host|, \verb|$user|, \verb|$password|en \verb|$databse|. Deze worden dan gebruikt in een \verb|mysqli_connect()| commando om een verbinding op te zetten met de databse. Hierna wordt er nog een controle gedaan om te kijken of de verbinding tot stand is gekomen, indien dit niet het geval is dan verkrijgen we een error. Deze code is enkel bedoeld voor tijdens het opzetten van de webserver en de database en dient verwijderd te worden indien de code definitief in gebruik wordt genomen. Als \verb|$host| kiezen we het local host adres 127.0.0.1 omdat de database zich op de Raspberry Pi zelf bevindt. De \verb|$user| en het \verb|$password| zijn specifiek voor elke database en hangen af van welke user je ingesteld hebt op je SQL server. 
+Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events en rooms. De structuur van de database en de relaties tussen de verschillende tables staat afgebeeld in figuur \ref{fig:dbstruct}. Op de Raspberry Pi staan verschillende PHP files die ervoor zorgen dat de webserver kan verbinden met de database. Een belangrijke file hierbij is dbConnect.php (zie figuur \ref{fig:dbconnect}), in deze file staan de gegevens die nodig zijn om te kunnen verbinden met de database. In deze  file declareren we verschillende variabelen: \verb|$host|, \verb|$user|, \verb|$password|en \verb|$databse|. Deze worden dan gebruikt in een \verb|mysqli_connect()| commando om een verbinding op te zetten met de databse. Hierna wordt er nog een controle gedaan om te kijken of de verbinding tot stand is gekomen, indien dit niet het geval is dan verkrijgen we een error. Deze code is enkel bedoeld voor tijdens het opzetten van de webserver en de database en dient verwijderd te worden indien de code definitief in gebruik wordt genomen. Als \verb|$host| kiezen we het local host adres 127.0.0.1 omdat de database zich op de Raspberry Pi zelf bevindt. De \verb|$user| en het \verb|$password| zijn specifiek voor elke database en hangen af van welke user je ingesteld hebt op je SQL server. 
 \begin{figure}[h]
 	\begin{verbatim}
 	<?php
@@ -218,26 +220,52 @@ De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel i
 
 \section{Resultaten}
 
-Wanneer we uit de databank de info van het lokaal 02.85 filteren, krijgen we volgende figuur \ref{fig:vboutput}.
+We kunnen uit de databank info van lokaal 02.85 filteren en in een tabel zetten. Zie figuur \ref{fig:vboutput}.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{vbDatabank}
+	\includegraphics[width=1\textwidth]{vbDatabank}
 	\caption{lokaalbezetting lokaal 02.85}
 	\label{fig:vboutput}
 \end{figure}
-	
+
+Wanneer we merkten dat dit werkte, hebben we daar nog data aan toegevoegd. Ook slaan we de data niet meer op in een bestand, omdat we dit moeilijk kunnen doorsturen. Nu kunnen we de info van lokaal 02.85 filteren op 4 april 2019. Zie figuur \ref{fig:vbdata}. Alles staat nu als tekst na elkaar. Dit is gemakkelijker om door te sturen. Eens het doorgestuurd is, kunnen we er opnieuw de juiste data uit filteren en er een tabel van maken om op een overzichtelijke manier op de display weer te geven.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{vbData02_85}
+	\caption{lokaalbezetting lokaal 02.85 op 04/04/2019}
+	\label{fig:vbdata}
+\end{figure}
+
+We kunnen ook een figuur op de E-ink display afbeelden. Figuur \ref{fig:vbscherm} is een voorbeeld van voor we de data uit de databank konden doorsturen. Hier staan dus nog geen lessen in, maar het toont de lay-out van de display.
+\newline
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{vbScherm}
+	\caption{E-ink display}
+	\label{fig:vbscherm}
+\end{figure}
+
+De database en het accesspoint waren relatief snel opgezet. Ook iets afbeelden op de display ging relatief vlot. Het moeilijkste was om de data te kunnen versturen naar de display. Het was ook niet eenvoudig om een framebuffer te maken, omdat we dachten dat het niet mogelijk was om een buffer te maken van het hele scherm. We hebben het scherm dus moeten verdelen zodat we voor elk stuk apart een buffer konden maken en zo het scherm stuk per stuk up te daten.
+
 \newpage
 
 \section{In het vervolg}
 
 Als we dit project verder zouden uitwerken, zouden we een andere mbed en wifi module gebruiken. Nu hebben we veel tijd verloren met het zoeken naar hoe we iets moeten implementeren. We zouden kunnen werken met modules die we kennen, waardoor alles sneller zou kunnen gaan. 
+\newline
+\newline
+We hebben veel tijd verloren door te zoeken naar hoe we een framebuffer van heel het scherm kunnen maken. We dachten dat dat niet mogelijk was, dus hebben we een oplossing gezocht om een buffer van een deel van het scherm te maken. Dit was niet gemakkelijk en heeft veel tijd ingenomen. Achteraf hebben we gehoord dat het wel mogelijk is om heel het scherm in één keer up te daten. We zouden dus kunnen uitzoeken hoe dat werkt en het scherm op die manier implementeren, omdat het updaten van het scherm zo sneller zou gaan. 
+\newline
+\newline
+Verder zouden we ook tijdens het zoeken naar oplossingen proberen meer geduld te hebben. Als er problemen waren met dingen die we niet begrepen, zouden we moeten efficiënter zoeken naar oplossingen. We zouden kunnen één manier van werken proberen volledig uit te werken en te begrijpen, in plaats van telkens iets kleins niet lukt, een volledig nieuwe manier te zoeken.
 
 \newpage
 
 \section{Conclusie}
 
-tekst.
+We hebben een manier gevonden om op een energie zuinige manier een leslokaal dynamisch aan te duiden. We kunnen op een E-ink display aanduiden op welke uren van de dag het lokaal vrij is. Wanneer het lokaal niet vrij is, is duidelijk wie in het lokaal zit, welk vak er op dat moment gegeven wordt en hoe lang het nog zal duren voor het lokaal  weer vrij is.
 
 \newpage
 
