@@ -202,7 +202,7 @@ Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events
 \end{figure}
 \begin{figure}[h]
 	\includegraphics[width=0.9\textwidth]{dbstruct}
-	\caption{Database structure}
+	\caption{Database structuur}
 	\label{fig:dbstruct}
 \end{figure}
 \subsubsection{Wifi Access Point op Raspberry Pi}
@@ -249,7 +249,21 @@ De webserver die we op onze Raspberry Pi draaien is een apache 2.4 server die de
 	\item \verb|room.php|
 	\item \verb|roominfo.php|
 \end{itemize}
-De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan. \verb|event.php| en \verb|room.php|, zijn hele kleine files die beide \'{e}\'{e}n enkele klasse bevatten.
+De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan. \verb|event.php| en \verb|room.php|, zijn hele kleine files die beide \'{e}\'{e}n enkele klasse bevatten. De UML diagramma's voor deze klassen staan in figuur \ref{fig:uml}.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{EventUML.png}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{RoomUML.png}
+	\end{subfigure}
+	\caption{UML diagram}
+	\label{fig:uml}
+\end{figure}
+De laatste en tevens ook grootste file is \verb|roominfo.php|. Hierin worden de klassen die in de vorige files gedefinieerd werden gebruikt. Bij onze GET-request geven we een variabele mee die \verb|roomName| genaamd is. Deze slaan we dan op in een variabele die we \verb|$roomName| gaan noemen. Wegens veiligheidsredenen gaan we eerst de door de gebruiker meegegeven variabele sanitizen, dit zorgt ervoor dat er geen SQL code kan geïnjecteerd worden die er eventueel voor kan zorgen dat onze database aangepast wordt zonder dat wij dit willen. De methode die we hiervoor gebruiken is \verb|mysqli_real_escape_string(string $escapestr)|. De variabele \verb|$roomName| kunnen we nu gebruiken om een query uit te voeren naar onze database om zo het \verb|roomID| en de \verb|roomDescription| te kunnen verkrijgen van het opgevraagde lokaal. 
 \newpage
 
 \section{Resultaten}
