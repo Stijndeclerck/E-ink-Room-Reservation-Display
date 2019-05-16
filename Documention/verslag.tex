@@ -262,8 +262,26 @@ De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel i
 	\end{subfigure}
 	\caption{UML diagram}
 	\label{fig:uml}
+\end{figure} \\
+De laatste en tevens ook grootste file is \verb|roominfo.php|. Hierin worden de klassen die in de vorige files gedefinieerd werden gebruikt. Bij onze GET-request geven we een variabele mee die \verb|roomName| genaamd is. Deze slaan we dan op in een variabele die we \verb|$roomName| gaan noemen. Wegens veiligheidsredenen gaan we eerst de door de gebruiker meegegeven variabele sanitizen, dit zorgt ervoor dat er geen SQL code kan geïnjecteerd worden die er eventueel voor kan zorgen dat onze database aangepast wordt zonder dat wij dit willen. De methode die we hiervoor gebruiken is \verb|mysqli_real_escape_string(string $escapestr)|.
+
+De variabele \verb|$roomName| kunnen we nu gebruiken om een query uit te voeren naar onze database om zo het \verb|roomID| en de \verb|roomDescription| te kunnen verkrijgen van het opgevraagde lokaal. Het opvragen van deze gegevens gebeurt volgens de code in figuur \ref{fig:roomsql}. Eerst wordt een statement aangemaakt via de \verb|prepare()| methode. Hierin zetten we de SQL code met de parameters die we willen selecteren en de voorwaarde die aangeeft welke entries van de database mogen opgehaald worden. De waarde van de variabele waarop geselecteerd wordt kennen we later toe met de \verb|bind_param()| methode. De eerste parameter geeft aan dat we selecteren op een variabele van het type String en de tweede parameter is de variabele zelf. Na de \verb|execute()| methode gebruiken we de \verb|bind_result()| methode om de variabelen van de opgehaalde database entry toe te kennen aan de correcte variabelen zodat we ze later kunnen gebruiken.  Het roomID hebben we nodig omdat we dan in onze event table kunnen zoeken naar alle geplande events die het opgegeven roomID bevatten.
+
+\begin{figure}
+	\begin{verbatim}
+		$roomName = mysqli_real_escape_string($conn, $_GET['roomName']);
+		$stmt = $conn->prepare("SELECT roomID, roomDescription FROM rooms WHERE roomName=?");
+		$stmt->bind_param("s", $roomName);
+		$stmt->execute();
+		$stmt->bind_result($roomID, $roomDescription);
+	\end{verbatim}
+	\caption{Info over lokaal ophalen uit database}
+	\label{fig:roomsql}
 \end{figure}
-De laatste en tevens ook grootste file is \verb|roominfo.php|. Hierin worden de klassen die in de vorige files gedefinieerd werden gebruikt. Bij onze GET-request geven we een variabele mee die \verb|roomName| genaamd is. Deze slaan we dan op in een variabele die we \verb|$roomName| gaan noemen. Wegens veiligheidsredenen gaan we eerst de door de gebruiker meegegeven variabele sanitizen, dit zorgt ervoor dat er geen SQL code kan geïnjecteerd worden die er eventueel voor kan zorgen dat onze database aangepast wordt zonder dat wij dit willen. De methode die we hiervoor gebruiken is \verb|mysqli_real_escape_string(string $escapestr)|. De variabele \verb|$roomName| kunnen we nu gebruiken om een query uit te voeren naar onze database om zo het \verb|roomID| en de \verb|roomDescription| te kunnen verkrijgen van het opgevraagde lokaal. 
+\newpage
+Na het ophalen van het roomID voeren we een SQL query uit om alle entries uit de events table te halen die doorgaan in het door ons opgevraagde lokaal. De resultaten van deze queries steken we dan in arrays, in de volgorde zoals ze uit de table gekomen zijn. Zo kunnen we gemakkelijk de verschillende variabelen opvragen door de indexen te gebruiken van de arrays. Alle elementen van een bepaald event bevinden zich namelijk op de plaats in de array met dezelfde index.De laatste stap is om via de courseID's de courseNames op te gaan vragen in de courses table en dan hebben we alle nodige info beschikbaar om terug te sturen naar de MBED.
+
+
 \newpage
 
 \section{Resultaten}
