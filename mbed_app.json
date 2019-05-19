@@ -3,5 +3,15 @@
         "K64F": {
             "platform.stdio-baud-rate": 9600
         }
+    },
+    "config": {
+        "wifi-ssid": {
+            "help": "WiFi SSID",
+            "value": "\"teamzoepertoff\""
+        },
+        "wifi-password": {
+            "help": "WiFi Password",
+            "value": "\"stijnkanniks\""
+        }
     }
 }
