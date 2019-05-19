@@ -202,11 +202,45 @@ Deze database genaamd roomdb bestaat uit 3 verschillende tables: courses, events
 \end{figure}
 \begin{figure}[h]
 	\includegraphics[width=0.9\textwidth]{dbstruct}
-	\caption{Database structure}
+	\caption{Database structuur}
 	\label{fig:dbstruct}
 \end{figure}
 \subsubsection{Wifi Access Point op Raspberry Pi}
-Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}.
+Voor het opzetten van de WAP op de Raspberry Pi hebben we een online step-by-step guide gevolgd \cite{RaspberryPiWAP}. De belangrijkste services die we hiervoor installeren op de Raspberry Pi zijn \verb|hostapd| en \verb|dnsmasq|.
+\paragraph{DNSmasq} \mbox{}\\ 
+Deze service is in principe gewoon een DHCP (Dynamic Host Configuration Protocol) server. Deze zal ervoor zorgen dat we dynamisch IP adressen kunnen toekennen op ons netwerk zonder dat we alle apparaten manueel moeten verbinden. In de config file van dnsmasq (die zich onder het volgende path bevindt \verb|/etc/dnsmasq.conf|) kennen we een range aan van IP adressen die onze Wifi kan gebruiken om toe te kennen aan apparaten. Verder bepalen we ook hoelang deze IP adressen kunnen gebruikt worden door de apparaten die zich verbinden met het Wifi netwerk. De config file ziet er dan als volgt uit \ref{fig:dnsmasq} .
+\begin{figure}[!h]
+	\begin{verbatim}
+	interface=wlan0
+	dhcp-range=192.168.0.11,192.168.0.30,255.255.255.0,24h
+	\end{verbatim}
+	\caption{dnsmasq.conf}
+	\label{fig:dnsmasq}
+\end{figure}
+\paragraph{Hostapd} \mbox{}\\
+Deze service zorgt ervoor dat er een WAP wordt opgezet. In de config file van hostapd (die zich onder het volgende path bevindt \verb|/etc/hostapd/hostapd.conf|) stel je het SSID en het wachtwoord in van je WAP. Verder stel je hier ook een bridge in tussen je ethernet verbinding en je wlan0 van je Raspberry Pi. Dit zorgt ervoor dat je zowel via ethernet als via de WAP toegang kan krijgen tot je webserver. In deze file zorgen we ervoor dat we steeds op channel 7 zullen zitten van van de Wifi. We stellen ook de Wifi Protected Acces (WPA) versie in en bepalen welke vorm van management we zullen gebruiken voor het WPA wachtwoord. Voor deze opdracht gebruiken we WPA-PSK wat staat voor Pre-Shared Key. Een wachtwoord bestaat uit minimaal 8 en maximaal 63 tekens. De config file ziet er dan als volgt uit \ref{fig:hostapd} .
+\begin{figure}[!h]
+	\begin{verbatim}
+	interface=wlan0
+	driver=nl80211
+	bridge=br0
+	hw_mode=g
+	channel=7
+	wmm_enabled=0
+	macaddr_acl=0
+	auth_algs=1
+	ignore_broadcast_ssid=0
+	wpa=2
+	wpa_key_mgmt=WPA-PSK
+	wpa_pairwise=TKIP
+	wpa_pairwise=CCMP
+	ssid=teamzoepertoff
+	wpa_passphrase=stijnkanniks
+	\end{verbatim}
+	\caption{hostapd.conf}
+	\label{fig:hostapd}
+\end{figure}
+\newpage
 \subsubsection{Webserver en GET request}
 De webserver die we op onze Raspberry Pi draaien is een apache 2.4 server die de mogelijkheid heeft om samen te werken met onze SQL database. Voor onze applicatie hebben we slechts vier van de zes aanwezige files nodig: 
 \begin{itemize}
@@ -215,7 +249,39 @@ De webserver die we op onze Raspberry Pi draaien is een apache 2.4 server die de
 	\item \verb|room.php|
 	\item \verb|roominfo.php|
 \end{itemize}
-De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan.
+De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan. \verb|event.php| en \verb|room.php|, zijn hele kleine files die beide \'{e}\'{e}n enkele klasse bevatten. De UML diagramma's voor deze klassen staan in figuur \ref{fig:uml}.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{EventUML.png}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{RoomUML.png}
+	\end{subfigure}
+	\caption{UML diagram}
+	\label{fig:uml}
+\end{figure} \\
+De laatste en tevens ook grootste file is \verb|roominfo.php|. Hierin worden de klassen die in de vorige files gedefinieerd werden gebruikt. Bij onze GET-request geven we een variabele mee die \verb|roomName| genaamd is. Deze slaan we dan op in een variabele die we \verb|$roomName| gaan noemen. Wegens veiligheidsredenen gaan we eerst de door de gebruiker meegegeven variabele sanitizen, dit zorgt ervoor dat er geen SQL code kan geïnjecteerd worden die er eventueel voor kan zorgen dat onze database aangepast wordt zonder dat wij dit willen. De methode die we hiervoor gebruiken is \verb|mysqli_real_escape_string(string $escapestr)|.
+
+De variabele \verb|$roomName| kunnen we nu gebruiken om een query uit te voeren naar onze database om zo het \verb|roomID| en de \verb|roomDescription| te kunnen verkrijgen van het opgevraagde lokaal. Het opvragen van deze gegevens gebeurt volgens de code in figuur \ref{fig:roomsql}. Eerst wordt een statement aangemaakt via de \verb|prepare()| methode. Hierin zetten we de SQL code met de parameters die we willen selecteren en de voorwaarde die aangeeft welke entries van de database mogen opgehaald worden. De waarde van de variabele waarop geselecteerd wordt kennen we later toe met de \verb|bind_param()| methode. De eerste parameter geeft aan dat we selecteren op een variabele van het type String en de tweede parameter is de variabele zelf. Na de \verb|execute()| methode gebruiken we de \verb|bind_result()| methode om de variabelen van de opgehaalde database entry toe te kennen aan de correcte variabelen zodat we ze later kunnen gebruiken.  Het roomID hebben we nodig omdat we dan in onze event table kunnen zoeken naar alle geplande events die het opgegeven roomID bevatten.
+
+\begin{figure}
+	\begin{verbatim}
+		$roomName = mysqli_real_escape_string($conn, $_GET['roomName']);
+		$stmt = $conn->prepare("SELECT roomID, roomDescription FROM rooms WHERE roomName=?");
+		$stmt->bind_param("s", $roomName);
+		$stmt->execute();
+		$stmt->bind_result($roomID, $roomDescription);
+	\end{verbatim}
+	\caption{Info over lokaal ophalen uit database}
+	\label{fig:roomsql}
+\end{figure}
+\newpage
+Na het ophalen van het roomID voeren we een SQL query uit om alle entries uit de events table te halen die doorgaan in het door ons opgevraagde lokaal. De resultaten van deze queries steken we dan in arrays, in de volgorde zoals ze uit de table gekomen zijn. Zo kunnen we gemakkelijk de verschillende variabelen opvragen door de indexen te gebruiken van de arrays. Alle elementen van een bepaald event bevinden zich namelijk op de plaats in de array met dezelfde index.De laatste stap is om via de courseID's de courseNames op te gaan vragen in de courses table en dan hebben we alle nodige info beschikbaar om terug te sturen naar de MBED.
+
+
 \newpage
 
 \subsection{communicatie tussen de mbed en de database}
