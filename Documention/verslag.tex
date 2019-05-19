@@ -218,6 +218,25 @@ De webserver die we op onze Raspberry Pi draaien is een apache 2.4 server die de
 De overige twee files (\verb|index.php| en \verb|showTable.php|) zijn er enkel indien we via een webbrowser toegang willen krijgen tot de lokaalbezetting. Wanneer we een GET request sturen vanuit onze MBED dan slaan we de \verb|index.php| file over. Een GET request ziet er als volgt uit: \\ \verb|http://ip-address/E-ink-room/roominfo.php?roomName=02.85|. \\ We gaan dus rechtstreeks naar \verb|roominfo.php| en geven als variabele het nummer mee van het lokaal waarvan we de info willen verkrijgen.  De inhoud van \verb|dbConnect.php| hebben we hierboven al besproken, dus zullen we er hier niet meer verder op ingaan.
 \newpage
 
+\subsection{communicatie tussen de mbed en de database}
+
+Om het lessenrooster te kunnen printen heeft de mbed gegevens nodig van de database. Er moet dus gecommuniceerd worden tussen de mbed en de database. De mbed heeft de rol van client en vraagt dus die gegevens aan de database, die logischerwijs de rol van server heeft.
+\newline
+
+De communicatie gebeurt via wifi. Op de mbed zit een wi-fi module ESP-WROOM-02 Click \cite{ESP-WROOM-02} die in staat is de data te ontvangen en versturen. In het programma dat loopt op de mbed wordt gebruik gemaakt van 2 functies om gegevens te verkrijgen.
+
+\subsubsection{de verbinding}
+
+Hoe wordt deze verbinding tot stand gebracht?
+
+De eerste functie \verb|init()| maakt verbinding met het wifi access point van de database en gaat als volgt te werk: eerst wordt gecontroleerd dat de mbed een wi-fi module heeft (dit is in ons geval de ESP-WROOM-02). Daarna probeert de mbed aan te melden bij de raspberry pi met een opgegeven \verb|WIFI_SSID| en het daarbij horende opgegeven \verb|WIFI_PASSWORD|. Deze  kunnen eenvoudig worden aangepast in een \verb|.json| file.
+
+\subsubsection{de gegevens}
+
+Hoe worden de gegevens uit de database verkregen?
+
+De tweede functie \verb|get(IP_ADDRESS, ROOM)| geeft een \verb|JSON_STRING| terug met daarin alle gegevens voor één lokaal. Het \verb|IP address| en \verb|room number| wordt meegegeven met deze functie. Eerst wordt het GET request samengesteld met de gekregen waarden. Daarna wordt een TCPSocket geopend en gekoppeld aan de Wi-Fi interface, waarna een connectie wordt gelegd met de database. Als die connectie er is, wordt het GET request verstuurd naar de database, die daar dan normaal gezien op antwoordt. De mbed leest de data in en slaat ze op in een buffer. Dit is echter nog de ruwe data. De buffer wordt uitgelezen en enkel de nodige gegevens woren opgeslagen in een tweede buffer. Die laatste is een \verb|JSON_STRING| en wordt dus teruggegeven door de functie.
+
 \section{Resultaten}
 
 We kunnen uit de databank info van lokaal 02.85 filteren en in een tabel zetten. Zie figuur \ref{fig:vboutput}.
