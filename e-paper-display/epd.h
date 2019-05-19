@@ -59,6 +59,9 @@ class Epd
         void clearFrame();
         void displayFrame();
 
+        int getWidth();
+        int getHeight();
+
         void displayFrame(const unsigned char* frame_black, const unsigned char* frame_red);
         void setPartialWindowRed(const unsigned char* buffer_red, int x, int y, int w, int l);
         void setPartialWindowBlack(const unsigned char* buffer_black, int x, int y, int w, int l);

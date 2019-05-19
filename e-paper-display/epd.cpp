@@ -28,6 +28,16 @@ void Epd::init()
     /* EPD hardware init end */
 }
 
+int Epd::getWidth()
+{
+    return this->width;
+}
+
+int Epd::getHeight()
+{
+    return this->height;
+}
+
 void Epd::sendCommand(unsigned char command)
 {
     dc = 0;
@@ -75,8 +85,6 @@ void Epd::waitUntilIdle()
 
 void Epd::reset()
 {
-    printf("EPD: reset \r\n");
-
     display_reset = 0;
     ThisThread::sleep_for(200);
     display_reset = 1;
@@ -117,8 +125,6 @@ void Epd::sleep()
 
 void Epd::displayFrame()
 {
-    printf("EPD: display SRAM \r\n");
-
     sendCommand(DISPLAY_REFRESH);
     ThisThread::sleep_for(100);
     waitUntilIdle();
@@ -126,8 +132,6 @@ void Epd::displayFrame()
 
 void Epd::displayFrame(const unsigned char* frame_black, const unsigned char* frame_red) 
 {
-    printf("EPD: display frame \r\n");
-
     if (frame_black != NULL) {
         sendCommand(DATA_START_TRANSMISSION_1);
         ThisThread::sleep_for(2);
